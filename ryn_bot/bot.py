@@ -1,0 +1,78 @@
+# -*- coding: utf-8 -*-
+"""
+ryn_bot/bot.py
+角色：Ryn（Ravi Anand）— HasLili 資安守門人
+功能：每日早上 08:00 抓取資安新聞 RSS，發送前 5 則
+語氣：冷靜、專業、簡短有力
+來源：The Hacker News
+"""
+import sys
+import os
+sys.stdout.reconfigure(encoding='utf-8')
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+import discord
+import asyncio
+import feedparser
+from datetime import datetime
+
+import config
+from shared.scheduler import daily_task
+
+# RSS 來源
+RSS_來源 = [
+    "https://feeds.feedburner.com/TheHackersNews",
+    "https://www.bleepingcomputer.com/feed/",
+]
+
+def 抓取資安新聞():
+    新聞列表 = []
+    for url in RSS_來源:
+        feed = feedparser.parse(url)
+        for entry in feed.entries[:3]:
+            新聞列表.append({
+                "標題": entry.title,
+                "連結": entry.link,
+            })
+        if len(新聞列表) >= 5:
+            break
+    return 新聞列表[:5]
+
+def 組合播報():
+    now = datetime.now()
+    日期 = now.strftime("%Y/%m/%d")
+    新聞 = 抓取資安新聞()
+
+    訊息 = f"今日資安情報｜{日期}\n\n"
+
+    if not 新聞:
+        訊息 += "今日暫無新情報。保持警戒。"
+    else:
+        for i, 項目 in enumerate(新聞, 1):
+            訊息 += f"{i}. {項目['標題']}\n{項目['連結']}\n\n"
+
+    訊息 += "純淨是最高級的防禦。\n— Ryn 🛡️"
+    return 訊息
+
+
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
+
+
+async def 發送資安播報():
+    channel = client.get_channel(config.CHANNEL_ID)
+    if channel:
+        await channel.send(組合播報())
+        print(f"✅ Ryn 資安播報發送完成 {datetime.now().strftime('%H:%M')}")
+    else:
+        print(f"❌ 找不到頻道 ID：{config.CHANNEL_ID}")
+
+
+@client.event
+async def on_ready():
+    print(f"✅ Ryn 上線！登入為 {client.user}")
+    await 發送資安播報()  # 上線立即發一次測試
+    asyncio.create_task(daily_task(8, 0, 發送資安播報))
+
+
+client.run(config.DISCORD_TOKEN)

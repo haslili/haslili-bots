@@ -1,0 +1,35 @@
+# ── Discord Bot Token 設定（絕對不可上傳）──
+dd_bot/config.py
+gg_bot/config.py
+ryn_bot/config.py
+rico_bot/config.py
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.log
+*.env
+.env
+.env*.local
+
+# ── Node / Next.js ──
+/node_modules
+/.pnp
+.pnp.js
+/coverage
+/.next/
+/out/
+/build
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Vercel ──
+.vercel
+*.pem
+
+# ── OS ──
+.DS_Store
+Thumbs.db
