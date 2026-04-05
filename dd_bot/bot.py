@@ -14,7 +14,8 @@ import requests
 import asyncio
 from datetime import datetime
 
-import config
+DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID"))
 from shared.scheduler import daily_task
 
 # DD 的每日開場白，隨星期幾輪替
@@ -119,12 +120,12 @@ client = discord.Client(intents=intents)
 
 
 async def 發送報告():
-    channel = client.get_channel(config.CHANNEL_ID)
+    channel = client.get_channel(CHANNEL_ID)
     if channel:
         await channel.send(組合報告())
         print(f"✅ DD 報告發送完成 {datetime.now().strftime('%H:%M')}")
     else:
-        print(f"❌ 找不到頻道 ID：{config.CHANNEL_ID}")
+        print(f"❌ 找不到頻道 ID：{CHANNEL_ID}")
 
 
 @client.event
@@ -134,4 +135,4 @@ async def on_ready():
     asyncio.create_task(daily_task(20, 0, 發送報告))
 
 
-client.run(config.DISCORD_TOKEN)
+client.run(DISCORD_TOKEN)

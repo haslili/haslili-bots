@@ -14,7 +14,8 @@ import discord
 import asyncio
 from datetime import datetime
 
-import config
+DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID"))
 from shared.scheduler import daily_task
 
 # 七天問候語
@@ -56,12 +57,12 @@ client = discord.Client(intents=intents)
 
 
 async def 發送問候():
-    channel = client.get_channel(config.CHANNEL_ID)
+    channel = client.get_channel(CHANNEL_ID)
     if channel:
         await channel.send(組合問候())
         print(f"✅ GG 問候發送完成 {datetime.now().strftime('%H:%M')}")
     else:
-        print(f"❌ 找不到頻道 ID：{config.CHANNEL_ID}")
+        print(f"❌ 找不到頻道 ID：{CHANNEL_ID}")
 
 
 @client.event
@@ -71,4 +72,4 @@ async def on_ready():
     asyncio.create_task(daily_task(9, 0, 發送問候))
 
 
-client.run(config.DISCORD_TOKEN)
+client.run(DISCORD_TOKEN)
