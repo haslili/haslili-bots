@@ -53,7 +53,11 @@ def 取得幣價():
             "vs_currencies": "usd",
             "include_24hr_change": "true"
         }
-        res = requests.get(url, params=params, timeout=10)
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json"
+        }
+        res = requests.get(url, params=params, headers=headers, timeout=15)
         data = res.json()
 
         def 格式化(coin_id, 名稱, 符號):
