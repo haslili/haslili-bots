@@ -12,11 +12,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import discord
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID"))
-from shared.scheduler import daily_task
 
 # 七天問候語
 問候語庫 = {
@@ -65,11 +64,20 @@ async def 發送問候():
         print(f"❌ 找不到頻道 ID：{CHANNEL_ID}")
 
 
+async def 排程():
+    while True:
+        now = datetime.now()
+        target = now.replace(hour=9, minute=0, second=0, microsecond=0)
+        if now >= target:
+            target = target + timedelta(days=1)
+        await asyncio.sleep((target - datetime.now()).total_seconds())
+        await 發送問候()
+
 @client.event
 async def on_ready():
     print(f"✅ GG 上線！登入為 {client.user}")
-    await 發送問候()  # 上線立即發一次測試
-    asyncio.create_task(daily_task(9, 0, 發送問候))
+    await 發送問候()  # 上線立即發一次
+    asyncio.create_task(排程())
 
 
 client.run(DISCORD_TOKEN)
