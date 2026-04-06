@@ -49,7 +49,7 @@ def 取得幣價():
     try:
         url = "https://api.coingecko.com/api/v3/simple/price"
         params = {
-            "ids": "bitcoin,ethereum,solana,binancecoin,sonic-3",
+            "ids": "bitcoin,ethereum,solana,binancecoin,sonic-3,cardano,dogecoin,avalanche-2",
             "vs_currencies": "usd",
             "include_24hr_change": "true"
         }
@@ -74,11 +74,14 @@ def 取得幣價():
             return f"{符號} {名稱}　${price:,.2f}　{arrow} {change:+.2f}%{備註}"
 
         幣種清單 = [
-            ("bitcoin",     "BTC",       "🟡"),
-            ("ethereum",    "ETH",       "🔵"),
-            ("solana",      "SOL",       "🟣"),
-            ("binancecoin", "BNB",       "🟠"),
-            ("sonic-3",     "S (Sonic)", "🌊"),
+            ("bitcoin",      "BTC",       "🟡"),
+            ("ethereum",     "ETH",       "🔵"),
+            ("solana",       "SOL",       "🟣"),
+            ("binancecoin",  "BNB",       "🟠"),
+            ("sonic-3",      "S (Sonic)", "🌊"),
+            ("cardano",      "ADA",       "🔷"),
+            ("dogecoin",     "DOGE",      "🐕"),
+            ("avalanche-2",  "AVAX",      "🔺"),
         ]
         return "\n".join(格式化(cid, name, sym) for cid, name, sym in 幣種清單)
     except Exception as e:

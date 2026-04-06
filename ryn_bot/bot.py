@@ -26,17 +26,12 @@ RSS_來源 = [
 ]
 
 def 抓取資安新聞():
-    新聞列表 = []
     for url in RSS_來源:
         feed = feedparser.parse(url)
-        for entry in feed.entries[:3]:
-            新聞列表.append({
-                "標題": entry.title,
-                "連結": entry.link,
-            })
-        if len(新聞列表) >= 5:
-            break
-    return 新聞列表[:5]
+        if feed.entries:
+            entry = feed.entries[0]
+            return [{"標題": entry.title, "連結": entry.link}]
+    return []
 
 def 組合播報():
     now = datetime.now()
