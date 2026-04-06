@@ -122,7 +122,6 @@ async def 排程():
 @client.event
 async def on_ready():
     print(f"✅ Rico 上線！登入為 {client.user}")
-    await 發送總經播報()  # 上線立即發一次
     asyncio.create_task(排程())
 
 
