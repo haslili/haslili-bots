@@ -2,7 +2,7 @@
 """
 rico_bot/bot.py
 角色：Rico — HasLili 現實策略師
-功能：每日早上 07:30 發送總體經濟播報
+功能：每日早上 08:00 發送總體經濟播報
 語氣：穩重務實，偶爾一句很實際的觀察
 來源：Yahoo Finance API（美股、台股、匯率、大宗商品）
 """
@@ -113,7 +113,7 @@ async def 發送總經播報():
 async def 排程():
     while True:
         now = datetime.now()
-        target = now.replace(hour=7, minute=30, second=0, microsecond=0)
+        target = now.replace(hour=8, minute=0, second=0, microsecond=0)
         if now >= target:
             target = target + timedelta(days=1)
         await asyncio.sleep((target - datetime.now()).total_seconds())

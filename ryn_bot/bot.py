@@ -2,7 +2,7 @@
 """
 ryn_bot/bot.py
 角色：Ryn（Ravi Anand）— HasLili 資安守門人
-功能：每日早上 08:00 抓取資安新聞 RSS，發送前 5 則
+功能：每日早上 08:30 抓取資安新聞 RSS，發送前 5 則
 語氣：冷靜、專業、簡短有力
 來源：The Hacker News
 """
@@ -66,7 +66,7 @@ async def 發送資安播報():
 async def 排程():
     while True:
         now = datetime.now()
-        target = now.replace(hour=8, minute=0, second=0, microsecond=0)
+        target = now.replace(hour=8, minute=30, second=0, microsecond=0)
         if now >= target:
             target = target + timedelta(days=1)
         await asyncio.sleep((target - datetime.now()).total_seconds())

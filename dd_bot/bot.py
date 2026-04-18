@@ -137,7 +137,7 @@ async def 發送報告():
 async def 排程():
     while True:
         now = datetime.now()
-        target = now.replace(hour=20, minute=0, second=0, microsecond=0)
+        target = now.replace(hour=22, minute=0, second=0, microsecond=0)
         if now >= target:
             target = target + timedelta(days=1)
         await asyncio.sleep((target - datetime.now()).total_seconds())
